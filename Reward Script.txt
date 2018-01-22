@@ -1,0 +1,57 @@
+﻿<?php
+$url = 'http://localhost:7876/nxt';
+
+$recipient = $_POST['recipient'];
+$recipientPublicKey = $_POST['recipientPublicKey'];
+
+
+$data0 = array(
+        'requestType' => 'getBlockchainTransactions',
+     'account' => $recipient,
+     'timestamp' => '0',
+     );
+
+
+$options0 = array(
+   'http' => array(
+       'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+       'method'  => 'POST',
+       'content' => http_build_query($data0),
+   ),
+);
+$context0  = stream_context_create($options0);
+$result0 = file_get_contents($url, false, $context0);
+$json_a = json_decode($result0, true);
+
+
+if (empty($json_a['transactions'])) {
+$data = array(
+        'requestType' => 'sendMessage',
+    'secretPhrase' =>,
+     'recipient' => $recipient,
+     'messageIsText' => 'hello',
+     'feeNQT' => '100000000',
+     'deadline' => '1440',
+     'recipientPublicKey' => $recipientPublicKey
+      );
+
+
+$options = array(
+   'http' => array(
+       'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+       'method'  => 'POST',
+       'content' => http_build_query($data),
+   ),
+);
+$context  = stream_context_create($options);
+$result = file_get_contents($url, false, $context);
+
+var_dump($result);
+
+
+}else{
+var_dump("Account already exists");
+}
+
+
+?>
